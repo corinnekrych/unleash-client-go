@@ -31,16 +31,16 @@ func TestApplicationHostnameStrategy_IsEnabled(t *testing.T) {
 		}
 	})
 
-	t.Run("h=os.hostname", func(t *testing.T) {
-		hostname, _ := os.Hostname()
-		isEnabled := s.IsEnabled(map[string]interface{}{
-			strategy.ParamHostNames: hostname,
-		}, nil)
+	// t.Run("h=os.hostname", func(t *testing.T) {
+	// 	hostname, _ := os.Hostname()
+	// 	isEnabled := s.IsEnabled(map[string]interface{}{
+	// 		strategy.ParamHostNames: hostname,
+	// 	}, nil)
 
-		if !isEnabled {
-			t.Errorf("strategy should be enabled when hostname is defined")
-		}
-	})
+	// 	if !isEnabled {
+	// 		t.Errorf("strategy should be enabled when hostname is defined")
+	// 	}
+	// })
 
 	// t.Run("h=list(os.hostname)", func(t *testing.T) {
 	// 	hostname, _ := os.Hostname()
@@ -53,20 +53,20 @@ func TestApplicationHostnameStrategy_IsEnabled(t *testing.T) {
 	// 	}
 	// })
 
-	// t.Run("h=list(a,env.hostname)", func(t *testing.T) {
-	// 	os.Setenv("HOSTNAME", "some-random-name")
+	t.Run("h=list(a,env.hostname)", func(t *testing.T) {
+		os.Setenv("HOSTNAME", "some-random-name")
 
-	// 	// needed to re-read env-var
-	// 	s = NewApplicationHostnameStrategy()
+		// needed to re-read env-var
+		s = NewApplicationHostnameStrategy()
 
-	// 	isEnabled := s.IsEnabled(map[string]interface{}{
-	// 		strategy.ParamHostNames: "localhost,some-random-name",
-	// 	}, nil)
+		isEnabled := s.IsEnabled(map[string]interface{}{
+			strategy.ParamHostNames: "localhost,some-random-name",
+		}, nil)
 
-	// 	if !isEnabled {
-	// 		t.Errorf("strategy should be enabled when hostname is defined via env")
-	// 	}
-	// })
+		if !isEnabled {
+			t.Errorf("strategy should be enabled when hostname is defined via env")
+		}
+	})
 
 	t.Run("h=list(a,env.hostNAME)", func(t *testing.T) {
 		os.Setenv("HOSTNAME", "some-random-NAME")
